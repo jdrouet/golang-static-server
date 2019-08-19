@@ -9,6 +9,8 @@ FROM scratch
 ENV DIRECTORY=/static
 ENV PORT=3000
 
-COPY --from=builder /app/simple-server /simple-server
+# to be able to deploy on heroku, we put the binary where /bin/sh
+# should be.
+COPY --from=builder /app/simple-server /bin/sh
 
-CMD ["/simple-server"]
+CMD ["/bin/sh"]
