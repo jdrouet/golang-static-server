@@ -6,31 +6,31 @@ build: build-amd64 build-i386 build-arm64v8 build-arm32v7 build-arm32v6
 
 build-amd64:
 	docker build \
-		--platform amd64 \
+		--platform linux/amd64 \
 		--build-arg BASE_ARCH=amd64 \
 		-t jdrouet/simple-server:amd64-${VERSION} .
 
 build-i386:
 	docker build \
-		--platform i386 \
+		--platform linux/386 \
 		--build-arg BASE_ARCH=i386 \
 		-t jdrouet/simple-server:i386-${VERSION} .
 
 build-arm64v8:
 	docker build \
-		--platform arm \
+		--platform linux/arm64/v8 \
 		--build-arg BASE_ARCH=arm64v8 \
 		-t jdrouet/simple-server:arm64v8-${VERSION} .
 
 build-arm32v7:
 	docker build \
-		--platform arm \
+		--platform linux/arm/v7 \
 		--build-arg BASE_ARCH=arm32v7 \
 		-t jdrouet/simple-server:arm32v7-${VERSION} .
 
 build-arm32v6:
 	docker build \
-		--platform arm \
+		--platform linux/arm/v6 \
 		--build-arg BASE_ARCH=arm32v6 \
 		-t jdrouet/simple-server:arm32v6-${VERSION} .
 
