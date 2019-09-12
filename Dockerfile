@@ -1,8 +1,14 @@
-FROM golang AS builder
+ARG BASE_ARCH=amd64
+ARG BASE_TAG=alpine
+
+FROM ${BASE_ARCH}/golang:${BASE_TAG} AS builder
+
+ENV CGO_ENABLED=0
+ENV GOOS=linux
 
 COPY . /app
 WORKDIR /app
-RUN CGO_ENABLED=0 go build -o simple-server source/main.go
+RUN go build -o simple-server source/main.go
 
 FROM scratch
 
