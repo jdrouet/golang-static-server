@@ -1,0 +1,163 @@
+name: Building docker image
+
+on: [push]
+
+jobs:
+  build-docker-image-amd64:
+
+    name: Build docker image for amd64
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: build for amd64
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: |
+            build --build-arg ARCH=amd64 \
+              --build-arg BASE_TAG=buster \
+              --platform amd64 \
+              -t jdrouet/simple-server:latest \
+              -t jdrouet/simple-server:latest-amd64 .
+
+      - name: login to registry
+        uses: actions/docker/login@76ff57a
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest-amd64
+
+  build-docker-image-i386:
+
+    name: Build docker image for i386
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: build for i386
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: |
+            build \
+              --build-arg ARCH=i386 \
+              --build-arg BASE_TAG=buster \
+              --platform i386 \
+              -t jdrouet/simple-server:latest-i386 .
+
+      - name: login to registry
+        uses: actions/docker/login@76ff57a
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest-i386
+
+  build-docker-image-arm64v8:
+
+    name: Build docker image for arm64v8
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Register QEMU
+        run: docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+
+      - uses: actions/checkout@master
+
+      - name: build for arm64v8
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: |
+            build \
+              --build-arg BASE_ARCH=arm64v8 \
+              --build-arg BASE_TAG=buster \
+              --platform arm64v8 \
+              -t jdrouet/simple-server:latest-arm64v8 .
+
+      - name: login to registry
+        uses: actions/docker/login@76ff57a
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest-arm64v8
+
+  build-docker-image-arm32v7:
+
+    name: Build docker image for arm32v7
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Register QEMU
+        run: docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+
+      - uses: actions/checkout@master
+
+      - name: build for arm32v7
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: |
+            build \
+              --build-arg BASE_ARCH=arm32v7 \
+              --build-arg BASE_TAG=buster \
+              --platform arm32v7 \
+              -t jdrouet/simple-server:latest-arm32v7 .
+
+      - name: login to registry
+        uses: actions/docker/login@76ff57a
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest-arm32v7
+
+  build-docker-image-arm32v6:
+
+    name: Build docker image for arm32v6
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Register QEMU
+        run: docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+
+      - uses: actions/checkout@master
+
+      - name: build for arm32v6
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: |
+            build \
+              --build-arg BASE_ARCH=arm32v6 \
+              --build-arg BASE_TAG=alpine \
+              --platform arm32v7 \
+              -t jdrouet/simple-server:latest-arm32v6 .
+
+      - name: login to registry
+        uses: actions/docker/login@76ff57a
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: push to the hub
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: push jdrouet/simple-server:latest-arm32v6

@@ -1,0 +1,64 @@
+name: Building binaries
+
+on: [push]
+
+jobs:
+  build-binaries:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: golang
+      env:
+        CGO_ENABLED: 0
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: build project for darwin i386
+        run: go build -o simple-server-darmin-i386 source/main.go
+        env:
+          GOARCH: 386
+          GOOS: darwin
+
+      - name: build project for darwin amd64
+        run: go build -o simple-server-darmin-amd64 source/main.go
+        env:
+          GOARCH: amd64
+          GOOS: darwin
+
+      - name: build project for linux i386
+        run: go build -o simple-server-linux-i386 source/main.go
+        env:
+          GOARCH: 386
+          GOOS: linux
+
+      - name: build project for linux amd64
+        run: go build -o simple-server-linux-amd64 source/main.go
+        env:
+          GOARCH: amd64
+          GOOS: linux
+
+      - name: build project for linux arm
+        run: go build -o simple-server-linux-arm source/main.go
+        env:
+          GOARCH: arm
+          GOOS: linux
+
+      - name: build project for linux arm64
+        run: go build -o simple-server-linux-arm64 source/main.go
+        env:
+          GOARCH: arm64
+          GOOS: linux
+
+      - name: build project for windows i386
+        run: go build -o simple-server-windows-i386.exe source/main.go
+        env:
+          GOARCH: 386
+          GOOS: windows
+
+      - name: build project for windows amd64
+        run: go build -o simple-server-windows-amd64.exe source/main.go
+        env:
+          GOARCH: amd64
+          GOOS: windows

@@ -1,4 +1,7 @@
-FROM golang AS builder
+ARG BASE_ARCH=amd64
+ARG BASE_TAG=latest
+
+FROM ${BASE_ARCH}/golang:${BASE_TAG} AS builder
 
 COPY . /app
 WORKDIR /app
